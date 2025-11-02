@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enter Your Name</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .form-container {
+            background: #2a2a2a;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin: 20px 0;
+            border: 2px solid #4285f4;
+            border-radius: 8px;
+            background: #1a1a1a;
+            color: white;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background: #f44242;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #e83535;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Enter your name</h1>
+        <form method="POST">
+            <input type="text" name="username" placeholder="shade :)" required autofocus>
+            <button type="submit">Go</button>
+        </form>
+    </div>
+</body>
+</html>

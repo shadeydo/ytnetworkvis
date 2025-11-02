@@ -34,7 +34,7 @@
              #mynetwork {
                  width: 100%;
                  height: 800px;
-                 background-color: #1a1a1a;
+                 background-color: #ffffff;
                  border: 1px solid lightgray;
                  position: relative;
                  float: left;
@@ -42,6 +42,12 @@
 
              
 
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
              
 
              
@@ -57,6 +63,8 @@
         </div>
 
         
+        
+            <div id="config"></div>
         
 
         <script type="text/javascript">
@@ -88,8 +96,8 @@
                   
 
                   // parsing and collecting nodes and edges from the python
-                  nodes = new vis.DataSet([{"font": {"color": "#ffffff"}, "group": "Film", "id": "UCYJPby9DRCteedh5tfxVbrw", "image": "https://yt3.ggpht.com/ytc/AIdro_nDJMhbSFpETCCo4uyCvtmHpkz9J2affqvGoSf3pkCjz9o=s88-c-k-c0x00ffffff-no-rj", "label": "Smosh Pit", "physics": true, "shape": "circularImage", "size": 24}, {"font": {"color": "#ffffff"}, "group": "user", "id": "Zarin", "label": "Zarin", "physics": true, "shape": "triangle", "size": 30}, {"font": {"color": "#ffffff"}, "group": "user", "id": "Shade", "label": "Shade", "physics": true, "shape": "triangle", "size": 30}, {"font": {"color": "#ffffff"}, "group": "Entertainment", "id": "UCEyodonqP_80YrDvattntmw", "image": "https://yt3.ggpht.com/DCTe_G1gghiGEVUhOnH_ld_uFKh3XVSxRvcWWqTvadDJN_SKVTn2lBqxBZgqOMpeAmVgFod_vfk=s88-c-k-c0x00ffffff-no-rj", "label": "SmoshCast", "physics": true, "shape": "circularImage", "size": 24}, {"font": {"color": "#ffffff"}, "group": "Action game", "id": "UCNUzWfHUP_iXZ1GMHz8gBgw", "image": "https://yt3.ggpht.com/ytc/AIdro_lFTx3_xD8bCfUl8Nnhla8Sf9k0qaVm6a_Q-4yiGdT8OAw=s88-c-k-c0x00ffffff-no-rj", "label": "ryukahr", "physics": true, "shape": "circularImage", "size": 24}, {"font": {"color": "#ffffff"}, "group": "Film", "id": "UCJ2ZDzMRgSrxmwphstrm8Ww", "image": "https://yt3.ggpht.com/ytc/AIdro_noAvfLiftnnGZwsTFt6GD4UKSxhNJRIUWntPUL47rziiXo=s88-c-k-c0x00ffffff-no-rj", "label": "Smosh Games", "physics": true, "shape": "circularImage", "size": 24}, {"font": {"color": "#ffffff"}, "group": "Technology", "id": "UCCWeRTgd79JL0ilH0ZywSJA", "image": "https://yt3.ggpht.com/ytc/AIdro_lAubzuua0Ymk5ZM4jL7_z4yhbKVfzHkKiISlbOH7KoA_Q=s88-c-k-c0x00ffffff-no-rj", "label": "AlphaPhoenix", "physics": true, "shape": "circularImage", "size": 24}, {"font": {"color": "#ffffff"}, "group": "Hobby", "id": "UC6I0KzAD7uFTL1qzxyunkvA", "image": "https://yt3.ggpht.com/ytc/AIdro_nfMDBCXeTAtZBXz4kx4hpD_Pm66dk3meC1GzBOcJS8j_8=s88-c-k-c0x00ffffff-no-rj", "label": "Blacktail Studio", "physics": true, "shape": "circularImage", "size": 24}, {"font": {"color": "#ffffff"}, "group": "Lifestyle (sociology)", "id": "UCSju5G2aFaWMqn-_0YBtq5A", "image": "https://yt3.ggpht.com/ytc/AIdro_kH1XY27N-S65HtyJ97eLeiYGSqanZuuVP2NgTzBt081h4=s88-c-k-c0x00ffffff-no-rj", "label": "Stand-up Maths", "physics": true, "shape": "circularImage", "size": 24}, {"font": {"color": "#ffffff"}, "group": "user", "id": ".DS_Store", "label": ".DS_Store", "physics": true, "shape": "triangle", "size": 30}]);
-                  edges = new vis.DataSet([{"color": "#15ed59", "from": "UCYJPby9DRCteedh5tfxVbrw", "to": "Zarin", "width": 1}, {"color": "#87a318", "from": "UCYJPby9DRCteedh5tfxVbrw", "to": "Shade", "width": 1}, {"color": "#15ed59", "from": "UCEyodonqP_80YrDvattntmw", "to": "Zarin", "width": 1}, {"color": "#87a318", "from": "UCEyodonqP_80YrDvattntmw", "to": "Shade", "width": 1}, {"color": "#15ed59", "from": "UCNUzWfHUP_iXZ1GMHz8gBgw", "to": "Zarin", "width": 1}, {"color": "#87a318", "from": "UCNUzWfHUP_iXZ1GMHz8gBgw", "to": "Shade", "width": 1}, {"color": "#15ed59", "from": "UCJ2ZDzMRgSrxmwphstrm8Ww", "to": "Zarin", "width": 1}, {"color": "#87a318", "from": "UCJ2ZDzMRgSrxmwphstrm8Ww", "to": "Shade", "width": 1}, {"color": "#15ed59", "from": "UCCWeRTgd79JL0ilH0ZywSJA", "to": "Zarin", "width": 1}, {"color": "#87a318", "from": "UCCWeRTgd79JL0ilH0ZywSJA", "to": "Shade", "width": 1}, {"color": "#15ed59", "from": "UC6I0KzAD7uFTL1qzxyunkvA", "to": "Zarin", "width": 1}, {"color": "#87a318", "from": "UC6I0KzAD7uFTL1qzxyunkvA", "to": "Shade", "width": 1}, {"color": "#15ed59", "from": "UCSju5G2aFaWMqn-_0YBtq5A", "to": "Zarin", "width": 1}, {"color": "#87a318", "from": "UCSju5G2aFaWMqn-_0YBtq5A", "to": "Shade", "width": 1}]);
+                  nodes = new vis.DataSet([{"font": {"color": "#1D1D1D"}, "group": "Television program", "id": "UCY30JRSgfhYXA6i6xX1erWg", "image": "https://yt3.ggpht.com/7WiYNRhekvu81d3UeA1LUmuUmpkienqw-Kfsh7tvCEqWARB6ozpqs4XhZ5w-RdPGcaopLK7KYw=s88-c-k-c0x00ffffff-no-rj", "label": "Smosh", "physics": true, "shape": "circularImage", "size": 21}, {"font": {"color": "#1D1D1D"}, "group": "user", "id": "shadekopf", "label": "shadekopf", "physics": true, "shape": "triangle", "size": 30}, {"font": {"color": "#1D1D1D"}, "group": "user", "id": "Shade", "label": "Shade", "physics": true, "shape": "triangle", "size": 30}, {"font": {"color": "#1D1D1D"}, "group": "Knowledge", "id": "UCHnyfMqiRRG1u-2MsSQLbXA", "image": "https://yt3.ggpht.com/7vCbvtCqtjQ3YLgsJt7Y952MQV1sBvhllSCSxHP8_sVZdcPCBrITfhkN2RdyCuwPnsByq-1GoA=s88-c-k-c0x00ffffff-no-rj", "label": "Veritasium", "physics": true, "shape": "circularImage", "size": 21}, {"font": {"color": "#1D1D1D"}, "group": "Technology", "id": "UCCWeRTgd79JL0ilH0ZywSJA", "image": "https://yt3.ggpht.com/ytc/AIdro_lAubzuua0Ymk5ZM4jL7_z4yhbKVfzHkKiISlbOH7KoA_Q=s88-c-k-c0x00ffffff-no-rj", "label": "AlphaPhoenix", "physics": true, "shape": "circularImage", "size": 24}, {"font": {"color": "#1D1D1D"}, "group": "user", "id": "Zarin", "label": "Zarin", "physics": true, "shape": "triangle", "size": 30}, {"font": {"color": "#1D1D1D"}, "group": "Film", "id": "UCYJPby9DRCteedh5tfxVbrw", "image": "https://yt3.ggpht.com/ytc/AIdro_nDJMhbSFpETCCo4uyCvtmHpkz9J2affqvGoSf3pkCjz9o=s88-c-k-c0x00ffffff-no-rj", "label": "Smosh Pit", "physics": true, "shape": "circularImage", "size": 21}, {"font": {"color": "#1D1D1D"}, "group": "Entertainment", "id": "UCEyodonqP_80YrDvattntmw", "image": "https://yt3.ggpht.com/DCTe_G1gghiGEVUhOnH_ld_uFKh3XVSxRvcWWqTvadDJN_SKVTn2lBqxBZgqOMpeAmVgFod_vfk=s88-c-k-c0x00ffffff-no-rj", "label": "SmoshCast", "physics": true, "shape": "circularImage", "size": 21}, {"font": {"color": "#1D1D1D"}, "group": "Action game", "id": "UCNUzWfHUP_iXZ1GMHz8gBgw", "image": "https://yt3.ggpht.com/ytc/AIdro_lFTx3_xD8bCfUl8Nnhla8Sf9k0qaVm6a_Q-4yiGdT8OAw=s88-c-k-c0x00ffffff-no-rj", "label": "ryukahr", "physics": true, "shape": "circularImage", "size": 21}, {"font": {"color": "#1D1D1D"}, "group": "Film", "id": "UCJ2ZDzMRgSrxmwphstrm8Ww", "image": "https://yt3.ggpht.com/ytc/AIdro_noAvfLiftnnGZwsTFt6GD4UKSxhNJRIUWntPUL47rziiXo=s88-c-k-c0x00ffffff-no-rj", "label": "Smosh Games", "physics": true, "shape": "circularImage", "size": 21}, {"font": {"color": "#1D1D1D"}, "group": "Hobby", "id": "UC6I0KzAD7uFTL1qzxyunkvA", "image": "https://yt3.ggpht.com/ytc/AIdro_nfMDBCXeTAtZBXz4kx4hpD_Pm66dk3meC1GzBOcJS8j_8=s88-c-k-c0x00ffffff-no-rj", "label": "Blacktail Studio", "physics": true, "shape": "circularImage", "size": 21}, {"font": {"color": "#1D1D1D"}, "group": "Lifestyle (sociology)", "id": "UCSju5G2aFaWMqn-_0YBtq5A", "image": "https://yt3.ggpht.com/ytc/AIdro_kH1XY27N-S65HtyJ97eLeiYGSqanZuuVP2NgTzBt081h4=s88-c-k-c0x00ffffff-no-rj", "label": "Stand-up Maths", "physics": true, "shape": "circularImage", "size": 21}]);
+                  edges = new vis.DataSet([{"color": "#ccffff", "from": "UCY30JRSgfhYXA6i6xX1erWg", "to": "shadekopf", "width": 1}, {"color": "#666ae2", "from": "UCY30JRSgfhYXA6i6xX1erWg", "to": "Shade", "width": 1}, {"color": "#ccffff", "from": "UCHnyfMqiRRG1u-2MsSQLbXA", "to": "shadekopf", "width": 1}, {"color": "#666ae2", "from": "UCHnyfMqiRRG1u-2MsSQLbXA", "to": "Shade", "width": 1}, {"color": "#ccffff", "from": "UCCWeRTgd79JL0ilH0ZywSJA", "to": "shadekopf", "width": 1}, {"color": "#3cf2a3", "from": "UCCWeRTgd79JL0ilH0ZywSJA", "to": "Zarin", "width": 1}, {"color": "#666ae2", "from": "UCCWeRTgd79JL0ilH0ZywSJA", "to": "Shade", "width": 1}, {"color": "#3cf2a3", "from": "UCYJPby9DRCteedh5tfxVbrw", "to": "Zarin", "width": 1}, {"color": "#666ae2", "from": "UCYJPby9DRCteedh5tfxVbrw", "to": "Shade", "width": 1}, {"color": "#3cf2a3", "from": "UCEyodonqP_80YrDvattntmw", "to": "Zarin", "width": 1}, {"color": "#666ae2", "from": "UCEyodonqP_80YrDvattntmw", "to": "Shade", "width": 1}, {"color": "#3cf2a3", "from": "UCNUzWfHUP_iXZ1GMHz8gBgw", "to": "Zarin", "width": 1}, {"color": "#666ae2", "from": "UCNUzWfHUP_iXZ1GMHz8gBgw", "to": "Shade", "width": 1}, {"color": "#3cf2a3", "from": "UCJ2ZDzMRgSrxmwphstrm8Ww", "to": "Zarin", "width": 1}, {"color": "#666ae2", "from": "UCJ2ZDzMRgSrxmwphstrm8Ww", "to": "Shade", "width": 1}, {"color": "#3cf2a3", "from": "UC6I0KzAD7uFTL1qzxyunkvA", "to": "Zarin", "width": 1}, {"color": "#666ae2", "from": "UC6I0KzAD7uFTL1qzxyunkvA", "to": "Shade", "width": 1}, {"color": "#3cf2a3", "from": "UCSju5G2aFaWMqn-_0YBtq5A", "to": "Zarin", "width": 1}, {"color": "#666ae2", "from": "UCSju5G2aFaWMqn-_0YBtq5A", "to": "Shade", "width": 1}]);
 
                   nodeColors = {};
                   allNodes = nodes.get({ returnType: "Object" });
@@ -102,7 +110,10 @@
 
                   var options = {
     "configure": {
-        "enabled": false
+        "enabled": true,
+        "filter": [
+            "manipulation"
+        ]
     },
     "edges": {
         "color": {
@@ -141,6 +152,10 @@
                   
 
 
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
                   
 
                   network = new vis.Network(container, data, options);
