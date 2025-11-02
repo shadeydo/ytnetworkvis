@@ -36,10 +36,13 @@ def index():
 
 @app.route('/login')
 def login():
+    # Get the base URL from request or environment
+    redirect_uri = os.environ.get('REDIRECT_URI', url_for('callback', _external=True))
+    
     flow = Flow.from_client_secrets_file(
         CLIENT_SECRETS_FILE,
         scopes=SCOPES,
-        redirect_uri=url_for('callback', _external=True)
+        redirect_uri=redirect_uri
     )
     
     authorization_url, state = flow.authorization_url(
@@ -126,4 +129,5 @@ def serve_static(filename):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5001)
+    port = int(os.environ.get('PORT', 5001))
+    app.run(debug=False, host='0.0.0.0', port=port)
