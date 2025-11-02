@@ -105,13 +105,19 @@ def visualize():
             return render_template('error.html', 
                 message="No user data found. Please add subscriptions first.")
         
-        nxgraph = build_network_graph(personlist, channellist)
-        create_network_visualization(nxgraph)
+        # Get list of usernames for the UI
+        usernames = [person.name for person in personlist]
         
-        return redirect('/static/graph.html')
+        nxgraph = build_network_graph(personlist, channellist)
+        create_network_visualization(nxgraph)  # Remove usernames parameter for now
+        
+        return render_template('visualize.html')
     
     except Exception as e:
-        return render_template('error.html', message=str(e))
+        import traceback
+        error_details = traceback.format_exc()
+        print(error_details)  # Print to console
+        return render_template('error.html', message=f"{str(e)}<br><br><pre>{error_details}</pre>")
 
 
 @app.route('/static/<path:filename>')

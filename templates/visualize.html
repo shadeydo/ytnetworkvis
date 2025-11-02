@@ -3,28 +3,275 @@
 <head>
     <title>Network Visualization</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: #1a1a1a;
-            color: white;
-            font-family: Arial, sans-serif;
+        body { margin: 0; padding: 0; background: #1a1a1a; color: white; font-family: Arial, sans-serif; }
+        .header { padding: 10px 20px; background: #2a2a2a; display: flex; justify-content: space-between; align-items: center; }
+        iframe { border: none; width: 100%; height: calc(100vh - 40px); }
+        .dropdowns {
+            display: flex;
+            justify-content: flex-start;
+            gap:10px;
+            flex-direction: row;
         }
-        .header {
-            padding: 10px;
-            background: #2a2a2a;
+        .dropdown { position: relative; }
+        .dropdown-btn { 
+            padding: 8px 16px; 
+            background: #444; 
+            color: #fff; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 14px;
+            min-width: 180px;
+            text-align: left;
         }
-        iframe {
-            border: none;
+        .dropdown-btn:hover { background: #555; }
+        .dropdown-btn::after { content: ' ▼'; float: right; font-size: 10px; }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: #333;
+            min-width: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border-radius: 4px;
+            margin-top: 5px;
+            z-index: 1000;
+        }
+        .dropdown.active .dropdown-content { display: block; }
+        .dropdown-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #444;
+        }
+        .dropdown-item:hover { background: #444; }
+        .dropdown-item label {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
             width: 100%;
-            height: calc(100vh - 20px);
+            user-select: none;
         }
+        .dropdown-item input[type="checkbox"] {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        a { color: #f44242; text-decoration: none; }
+        a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
     <div class="header">
-        <a href="/" style="color: #4285f4;">← back</a>
+        <a href="/">← back</a>
+        <div class="dropdowns">
+            <div class="dropdown" id="users-dropdown">
+            <button class="dropdown-btn" id="users-btn">Users: All Selected</button>
+            <div class="dropdown-content" id="users-content"></div>
+        </div>
+        <div class="dropdown" id="category-dropdown">
+            <button class="dropdown-btn" id="category-btn">Categories: All Selected</button>
+            <div class="dropdown-content" id="category-content"></div>
+        </div>
+        </div>
+        
     </div>
-    <iframe src="/static/graph.html"></iframe>
+    <iframe id="graph-frame" src="/static/graph.html"></iframe>
+
+    <script>
+        const iframe = document.getElementById('graph-frame');
+        
+        document.getElementById('users-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            const dropdown = document.getElementById('users-dropdown');
+            dropdown.classList.toggle('active');
+            document.getElementById('category-dropdown').classList.remove('active');
+        });
+        
+        document.getElementById('category-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            const dropdown = document.getElementById('category-dropdown');
+            dropdown.classList.toggle('active');
+            document.getElementById('users-dropdown').classList.remove('active');
+        });
+        
+        // Prevent dropdown from closing when clicking inside it
+        document.querySelectorAll('.dropdown-content').forEach(content => {
+            content.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        });
+        
+        // Only close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('active'));
+            }
+        });
+        
+        iframe.addEventListener('load', () => {
+            setTimeout(() => {
+                const iframeWindow = iframe.contentWindow;
+                const nodes = iframeWindow.nodes.get();
+                const edges = iframeWindow.edges.get();
+                const users = new Set();
+                const categories = new Set();
+                const userToNodes = new Map();
+                const categoryToNodes = new Map();
+                const originalNodeData = new Map(); // Store original node properties
+                
+                // Find all user nodes (triangular nodes with group="user")
+                nodes.forEach(n => {
+                    // Store original properties
+                    originalNodeData.set(n.id, {...n});
+                    
+                    if (n.group === 'user') {
+                        const userName = n.label || n.id;
+                        users.add(userName);
+                        if (!userToNodes.has(userName)) {
+                            userToNodes.set(userName, {userNodes: [], channelNodes: []});
+                        }
+                        userToNodes.get(userName).userNodes.push(n.id);
+                    } else if (n.group) {
+                        // Channel node with a category
+                        categories.add(n.group);
+                        if (!categoryToNodes.has(n.group)) {
+                            categoryToNodes.set(n.group, []);
+                        }
+                        categoryToNodes.get(n.group).push(n.id);
+                    }
+                });
+                
+                // Find channels connected to each user
+                users.forEach(user => {
+                    const userNodeIds = userToNodes.get(user).userNodes;
+                    edges.forEach(edge => {
+                        // User is the Person node (triangle), channels are connected to it
+                        if (userNodeIds.includes(edge.from) && !userNodeIds.includes(edge.to)) {
+                            userToNodes.get(user).channelNodes.push(edge.to);
+                        }
+                        if (userNodeIds.includes(edge.to) && !userNodeIds.includes(edge.from)) {
+                            userToNodes.get(user).channelNodes.push(edge.from);
+                        }
+                    });
+                });
+                
+                // Build user checkboxes
+                const usersContent = document.getElementById('users-content');
+                Array.from(users).sort().forEach(user => {
+                    const div = document.createElement('div');
+                    div.className = 'dropdown-item';
+                    div.innerHTML = `<label><input type="checkbox" class="user-checkbox" data-user="${user}" checked> ${user}</label>`;
+                    usersContent.appendChild(div);
+                });
+                
+                // Build category checkboxes
+                const categoryContent = document.getElementById('category-content');
+                console.log('Categories found:', Array.from(categories));
+                Array.from(categories).sort().forEach(category => {
+                    const div = document.createElement('div');
+                    div.className = 'dropdown-item';
+                    div.innerHTML = `<label><input type="checkbox" class="category-checkbox" data-category="${category}" checked> ${category}</label>`;
+                    categoryContent.appendChild(div);
+                });
+                
+                // Handle checkbox changes
+                document.querySelectorAll('.user-checkbox').forEach(cb => {
+                    cb.addEventListener('change', () => {
+                        updateVisibility();
+                        updateUserButtonText();
+                    });
+                });
+                
+                document.querySelectorAll('.category-checkbox').forEach(cb => {
+                    cb.addEventListener('change', () => {
+                        updateVisibility();
+                        updateCategoryButtonText();
+                    });
+                });
+                
+                function updateUserButtonText() {
+                    const checked = document.querySelectorAll('.user-checkbox:checked').length;
+                    const total = document.querySelectorAll('.user-checkbox').length;
+                    document.getElementById('users-btn').textContent = 
+                        `Users: ${checked === total ? 'All Selected' : checked + '/' + total}`;
+                }
+                
+                function updateCategoryButtonText() {
+                    const checked = document.querySelectorAll('.category-checkbox:checked').length;
+                    const total = document.querySelectorAll('.category-checkbox').length;
+                    document.getElementById('category-btn').textContent = 
+                        `Categories: ${checked === total ? 'All Selected' : checked + '/' + total}`;
+                }
+                
+                function updateVisibility() {
+                    const selectedUsers = Array.from(document.querySelectorAll('.user-checkbox:checked')).map(cb => cb.dataset.user);
+                    const selectedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(cb => cb.dataset.category);
+                    
+                    // Hide/show based on user selection
+                    users.forEach(user => {
+                        const isUserSelected = selectedUsers.includes(user);
+                        const userData = userToNodes.get(user);
+                        
+                        // User nodes - preserve original color
+                        userData.userNodes.forEach(nodeId => {
+                            const original = originalNodeData.get(nodeId);
+                            iframeWindow.nodes.update({
+                                id: nodeId, 
+                                hidden: !isUserSelected, 
+                                physics: isUserSelected,
+                                color: original.color
+                            });
+                        });
+                        
+                        // User's channels (also check category filter)
+                        userData.channelNodes.forEach(nodeId => {
+                            const node = nodes.find(n => n.id === nodeId);
+                            const categorySelected = !node.group || selectedCategories.includes(node.group);
+                            const visible = isUserSelected && categorySelected;
+                            const original = originalNodeData.get(nodeId);
+                            iframeWindow.nodes.update({
+                                id: nodeId, 
+                                hidden: !visible, 
+                                physics: visible,
+                                color: original.color,
+                                image: original.image
+                            });
+                        });
+                    });
+                    
+                    // Hide/show based on category (for channels not yet handled)
+                    categories.forEach(category => {
+                        const isCategorySelected = selectedCategories.includes(category);
+                        const channelIds = categoryToNodes.get(category);
+                        
+                        channelIds.forEach(nodeId => {
+                            const node = iframeWindow.nodes.get(nodeId);
+                            if (!node.hidden) { // Only update if not already hidden by user filter
+                                const original = originalNodeData.get(nodeId);
+                                iframeWindow.nodes.update({
+                                    id: nodeId, 
+                                    hidden: !isCategorySelected, 
+                                    physics: isCategorySelected,
+                                    color: original.color,
+                                    image: original.image
+                                });
+                            }
+                        });
+                    });
+                    
+                    // Update edges
+                    edges.forEach(edge => {
+                        const fromNode = iframeWindow.nodes.get(edge.from);
+                        const toNode = iframeWindow.nodes.get(edge.to);
+                        const visible = !fromNode.hidden && !toNode.hidden;
+                        iframeWindow.edges.update({id: edge.id, hidden: !visible});
+                    });
+                    
+                    iframeWindow.network.stabilize();
+                }
+            }, 1000);
+        });
+    </script>
 </body>
 </html>

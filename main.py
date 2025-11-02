@@ -126,21 +126,21 @@ class Channel:
 
 
 class Person:
-    """User with their subscriptions"""
-    
     def __init__(self, name="p1", color="red", channels=None):
         self.name = name
         self.channels = []
         self.color = color
 
+    
     def makeNode(self, graph):
         graph.add_node(
             self.name,
-            color=self.color,
-            shape="triangle",
+            color={'background': self.color, 'border': self.color},
+            shape="star",
             physics=True,
             group="user",
-            size=30
+            size=30,
+            borderWidth=2
         )
 
     def generateChannels(self, dataframe, channellist):
@@ -237,9 +237,15 @@ def create_network_visualization(nxgraph, output_path="static/graph.html"):
         spring_strength=0.1,
         damping=0.7          # Higher = less movement
     )
-    g.show_buttons(['manipulation'])
+    g.show_buttons(filter_=["physics","manipulation"])
     
     g.from_nx(nxgraph)
+    
+    for node in nxgraph.nodes():
+        if nxgraph.nodes[node].get('group') == 'user':
+            node_data = nxgraph.nodes[node]
+            g.get_node(node)['color'] = node_data.get('color', 'red')
+        
     g.save_graph(output_path)
 
     return output_path
