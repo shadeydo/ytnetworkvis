@@ -1,0 +1,163 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 800px;
+                 background-color: #1a1a1a;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "#ffffff"}, "group": "Film", "id": "UCYJPby9DRCteedh5tfxVbrw", "image": "https://yt3.ggpht.com/ytc/AIdro_nDJMhbSFpETCCo4uyCvtmHpkz9J2affqvGoSf3pkCjz9o=s88-c-k-c0x00ffffff-no-rj", "label": "Smosh Pit", "physics": true, "shape": "circularImage", "size": 24}, {"font": {"color": "#ffffff"}, "group": "user", "id": "Zarin", "label": "Zarin", "physics": true, "shape": "triangle", "size": 30}, {"font": {"color": "#ffffff"}, "group": "user", "id": "Shade", "label": "Shade", "physics": true, "shape": "triangle", "size": 30}, {"font": {"color": "#ffffff"}, "group": "Entertainment", "id": "UCEyodonqP_80YrDvattntmw", "image": "https://yt3.ggpht.com/DCTe_G1gghiGEVUhOnH_ld_uFKh3XVSxRvcWWqTvadDJN_SKVTn2lBqxBZgqOMpeAmVgFod_vfk=s88-c-k-c0x00ffffff-no-rj", "label": "SmoshCast", "physics": true, "shape": "circularImage", "size": 24}, {"font": {"color": "#ffffff"}, "group": "Action game", "id": "UCNUzWfHUP_iXZ1GMHz8gBgw", "image": "https://yt3.ggpht.com/ytc/AIdro_lFTx3_xD8bCfUl8Nnhla8Sf9k0qaVm6a_Q-4yiGdT8OAw=s88-c-k-c0x00ffffff-no-rj", "label": "ryukahr", "physics": true, "shape": "circularImage", "size": 24}, {"font": {"color": "#ffffff"}, "group": "Film", "id": "UCJ2ZDzMRgSrxmwphstrm8Ww", "image": "https://yt3.ggpht.com/ytc/AIdro_noAvfLiftnnGZwsTFt6GD4UKSxhNJRIUWntPUL47rziiXo=s88-c-k-c0x00ffffff-no-rj", "label": "Smosh Games", "physics": true, "shape": "circularImage", "size": 24}, {"font": {"color": "#ffffff"}, "group": "Technology", "id": "UCCWeRTgd79JL0ilH0ZywSJA", "image": "https://yt3.ggpht.com/ytc/AIdro_lAubzuua0Ymk5ZM4jL7_z4yhbKVfzHkKiISlbOH7KoA_Q=s88-c-k-c0x00ffffff-no-rj", "label": "AlphaPhoenix", "physics": true, "shape": "circularImage", "size": 24}, {"font": {"color": "#ffffff"}, "group": "Hobby", "id": "UC6I0KzAD7uFTL1qzxyunkvA", "image": "https://yt3.ggpht.com/ytc/AIdro_nfMDBCXeTAtZBXz4kx4hpD_Pm66dk3meC1GzBOcJS8j_8=s88-c-k-c0x00ffffff-no-rj", "label": "Blacktail Studio", "physics": true, "shape": "circularImage", "size": 24}, {"font": {"color": "#ffffff"}, "group": "Lifestyle (sociology)", "id": "UCSju5G2aFaWMqn-_0YBtq5A", "image": "https://yt3.ggpht.com/ytc/AIdro_kH1XY27N-S65HtyJ97eLeiYGSqanZuuVP2NgTzBt081h4=s88-c-k-c0x00ffffff-no-rj", "label": "Stand-up Maths", "physics": true, "shape": "circularImage", "size": 24}, {"font": {"color": "#ffffff"}, "group": "user", "id": ".DS_Store", "label": ".DS_Store", "physics": true, "shape": "triangle", "size": 30}]);
+                  edges = new vis.DataSet([{"color": "#15ed59", "from": "UCYJPby9DRCteedh5tfxVbrw", "to": "Zarin", "width": 1}, {"color": "#87a318", "from": "UCYJPby9DRCteedh5tfxVbrw", "to": "Shade", "width": 1}, {"color": "#15ed59", "from": "UCEyodonqP_80YrDvattntmw", "to": "Zarin", "width": 1}, {"color": "#87a318", "from": "UCEyodonqP_80YrDvattntmw", "to": "Shade", "width": 1}, {"color": "#15ed59", "from": "UCNUzWfHUP_iXZ1GMHz8gBgw", "to": "Zarin", "width": 1}, {"color": "#87a318", "from": "UCNUzWfHUP_iXZ1GMHz8gBgw", "to": "Shade", "width": 1}, {"color": "#15ed59", "from": "UCJ2ZDzMRgSrxmwphstrm8Ww", "to": "Zarin", "width": 1}, {"color": "#87a318", "from": "UCJ2ZDzMRgSrxmwphstrm8Ww", "to": "Shade", "width": 1}, {"color": "#15ed59", "from": "UCCWeRTgd79JL0ilH0ZywSJA", "to": "Zarin", "width": 1}, {"color": "#87a318", "from": "UCCWeRTgd79JL0ilH0ZywSJA", "to": "Shade", "width": 1}, {"color": "#15ed59", "from": "UC6I0KzAD7uFTL1qzxyunkvA", "to": "Zarin", "width": 1}, {"color": "#87a318", "from": "UC6I0KzAD7uFTL1qzxyunkvA", "to": "Shade", "width": 1}, {"color": "#15ed59", "from": "UCSju5G2aFaWMqn-_0YBtq5A", "to": "Zarin", "width": 1}, {"color": "#87a318", "from": "UCSju5G2aFaWMqn-_0YBtq5A", "to": "Shade", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "barnesHut": {
+            "avoidOverlap": 0,
+            "centralGravity": 0,
+            "damping": 0.7,
+            "gravitationalConstant": -50000,
+            "springConstant": 0.1,
+            "springLength": 200
+        },
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
